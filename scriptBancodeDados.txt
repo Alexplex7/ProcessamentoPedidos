@@ -1,0 +1,87 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS mydb DEFAULT CHARACTER SET utf8 ;
+USE mydb ;
+
+-- -----------------------------------------------------
+-- Table mydb.Pedido
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS mydb.Pedido (
+  idPedido INT NOT NULL,
+  PRIMARY KEY (idPedido),
+  UNIQUE INDEX idPedido_UNIQUE (idPedido ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table mydb.Status
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS mydb.Status (
+  idStatus INT NOT NULL,
+  condicao VARCHAR(20) NOT NULL,
+  FK-idPedido INT NULL,
+  PRIMARY KEY (idStatus),
+  INDEX FK-idPedido_idx (FK-idPedido ASC) VISIBLE,
+  CONSTRAINT FK-idPedido
+    FOREIGN KEY (FK-idPedido)
+    REFERENCES mydb.Pedido (idPedido)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table mydb.Chat
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS mydb.Chat (
+  idChat INT NOT NULL,
+  FK-idPedido INT NOT NULL,
+  FK-idProvedor INT NOT NULL,
+  Dt_envio DATETIME(24) NOT NULL,
+  Mensagem VARCHAR(45) NULL,
+  FK-idPedido INT NULL,
+  FK-idCliente INT NULL,
+  PRIMARY KEY (idChat),
+  INDEX FK-idPedido_idx (FK-idPedido ASC) VISIBLE,
+  CONSTRAINT FK-idPedido
+    FOREIGN KEY (FK-idPedido)
+    REFERENCES mydb.Pedido (idPedido)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table mydb.Rastreamento
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS mydb.Rastreamento (
+  idRastreamento INT NOT NULL,
+  FK-idPedido INT NULL,
+  FK-idProduto INT NULL,
+  FK-idCliente INT NULL,
+  FK-idProvedor INT NULL,
+  Cod-Rastreio INT NULL,
+  PRIMARY KEY (idRastreamento),
+  INDEX FK-idPedido_idx (FK-idPedido ASC) VISIBLE,
+  CONSTRAINT FK-idPedido
+    FOREIGN KEY (FK-idPedido)
+    REFERENCES mydb.Pedido (idPedido)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
